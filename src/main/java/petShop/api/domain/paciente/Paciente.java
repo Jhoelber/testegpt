@@ -28,7 +28,7 @@ public class Paciente {
     @Embedded
     private Endereco endereco;
 
-    private Dono dono
+   
     private Boolean ativo;
 
     public Paciente(DadosCadastroPaciente dados) {
