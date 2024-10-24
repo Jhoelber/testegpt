@@ -1,9 +1,10 @@
 package petShop.api.domain.veterinario;
 
+import petShop.api.domain.cliente.Cliente;
 import petShop.api.domain.consulta.Consulta;
 import petShop.api.domain.endereco.DadosEndereco;
-import petShop.api.domain.paciente.DadosCadastroPaciente;
-import petShop.api.domain.paciente.Paciente;
+import petShop.api.domain.animal.DadosCadastroAnimal;
+import petShop.api.domain.animal.Animal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +38,20 @@ class VeterinarioRepositoryTest {
         var proximaSegundaAs10 = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .atTime(10, 0);
-        var veterinario = cadastrarVeterinario("Veterinario", "veterinario@voll.med", "123456", Especialidade.CARDIOLOGIA);
-        var paciente = cadastrarPaciente("Paciente", "paciente@email.com", "00000000000");
-        cadastrarConsulta(veterinario, paciente, proximaSegundaAs10);
+        var veterinario = cadastrarVeterinario(
+                "Veterinario", "veterinario@hotmail.com",
+                "123456", Especialidade.CARDIOLOGIA);
+        var animal = cadastrarAnimal("Animal", "animal@email.com",
+                "00000000000", "masculino",
+                "2024-10-10", "marrom",
+                "bravo ao lavar", "pinscher", "12kg",
+                new Cliente());
+        cadastrarConsulta(veterinario, animal, proximaSegundaAs10);
 
-        //when ou act
+
         var veterinarioLivre = veterinarioRepository.escolherVeterinarioAleatorioLivreNaData(Especialidade.CARDIOLOGIA, proximaSegundaAs10);
 
-        //then ou assert
+
         assertThat(veterinarioLivre).isNull();
     }
 
@@ -55,17 +62,19 @@ class VeterinarioRepositoryTest {
         var proximaSegundaAs10 = LocalDate.now()
                 .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
                 .atTime(10, 0);
-        var veterinario = cadastrarVeterinario("Veterinario", "veterinario@voll.med", "123456", Especialidade.CARDIOLOGIA);
+        var veterinario = cadastrarVeterinario(
+                "Veterinario", "veterinario@voll.med",
+                "123456", Especialidade.CARDIOLOGIA);
 
-        //when ou act
+
         var veterinarioLivre = veterinarioRepository.escolherVeterinarioAleatorioLivreNaData(Especialidade.CARDIOLOGIA, proximaSegundaAs10);
 
-        //then ou assert
+
         assertThat(veterinarioLivre).isEqualTo(veterinario);
     }
 
-    private void cadastrarConsulta(Veterinario veterinario, Paciente paciente, LocalDateTime data) {
-        em.persist(new Consulta(null, veterinario, paciente, data, null));
+    private void cadastrarConsulta(Veterinario veterinario, Animal animal, LocalDateTime data) {
+        em.persist(new Consulta(null, veterinario, animal, data, null));
     }
 
     private Veterinario cadastrarVeterinario(String nome, String email, String crm, Especialidade especialidade) {
@@ -74,10 +83,29 @@ class VeterinarioRepositoryTest {
         return veterinario;
     }
 
-    private Paciente cadastrarPaciente(String nome, String email, String cpf) {
-        var paciente = new Paciente(dadosPaciente(nome, email, cpf));
-        em.persist(paciente);
-        return paciente;
+    private Animal cadastrarAnimal(
+            String nome,
+            String especie,
+            String vacina,
+            String sexo,
+            String dataNascimento,
+            String cor,
+            String descricao,
+            String raca,
+            String peso,
+            Cliente cliente) {
+        var animal = new Animal(dadosAnimal(nome,
+                especie,
+                vacina,
+                sexo,
+                dataNascimento,
+                cor,
+                descricao,
+                raca,
+                peso,
+                cliente));
+        em.persist(animal);
+        return animal;
     }
 
     private DadosCadastroVeterinario dadosVeterinario(String nome, String email, String crm, Especialidade especialidade) {
@@ -91,13 +119,29 @@ class VeterinarioRepositoryTest {
         );
     }
 
-    private DadosCadastroPaciente dadosPaciente(String nome, String email, String cpf) {
-        return new DadosCadastroPaciente(
+    private DadosCadastroAnimal dadosAnimal(String nome,
+                                            String especie,
+                                            String vacina,
+                                            String sexo,
+                                            String dataNascimento,
+                                            String cor,
+                                            String descricao,
+                                            String raca,
+                                            String peso,
+                                            Cliente cliente) {
+        return new DadosCadastroAnimal(
                 nome,
-                email,
-                "61999999999",
-                cpf,
-                dadosEndereco()
+                especie,
+                vacina,
+                sexo,
+                dataNascimento,
+                cor,
+                descricao,
+                raca,
+                peso,
+               cliente
+
+
         );
     }
 

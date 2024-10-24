@@ -1,18 +1,19 @@
-package petShop.api.domain.paciente;
+package petShop.api.domain.cliente;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface PacienteRepository extends JpaRepository<Paciente, Long> {
-    Page<Paciente> findAllByAtivoTrue(Pageable paginacao);
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
+    Page<Cliente> findAllByAtivoTrue(Pageable paginacao);
 
     @Query("""
             select p.ativo
-            from Paciente p
+            from Cliente p
             where
             p.id = :id
             """)
     Boolean findAtivoById(Long id);
+
 }

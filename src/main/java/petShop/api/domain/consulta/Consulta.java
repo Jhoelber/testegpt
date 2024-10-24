@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import petShop.api.domain.paciente.Paciente;
+import petShop.api.domain.animal.Animal;
 import petShop.api.domain.veterinario.Veterinario;
 
 import java.time.LocalDateTime;
@@ -28,8 +28,8 @@ public class Consulta {
     private Veterinario veterinario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "paciente_id")
-    private Paciente paciente;
+    @JoinColumn(name = "animal_id")
+    private Animal animal;
 
     private LocalDateTime data;
 

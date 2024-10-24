@@ -6,7 +6,7 @@ import petShop.api.domain.consulta.validacoes.cancelamento.ValidadorCancelamento
 
 import petShop.api.domain.veterinario.Veterinario;
 import petShop.api.domain.veterinario.VeterinarioRepository;
-import petShop.api.domain.paciente.PacienteRepository;
+import petShop.api.domain.animal.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class AgendaDeConsultas {
     private VeterinarioRepository veterinarioRepository;
 
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private AnimalRepository animalRepository;
 
     @Autowired
     private List<ValidadorAgendamentoDeConsulta> validadores;
@@ -31,8 +31,8 @@ public class AgendaDeConsultas {
     private List<ValidadorCancelamentoDeConsulta> validadoresCancelamento;
 
     public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
-        if (!pacienteRepository.existsById(dados.idPaciente())) {
-            throw new ValidacaoException("Id do paciente informado não existe!");
+        if (!animalRepository.existsById(dados.idAnimal())) {
+            throw new ValidacaoException("Id do animal informado não existe!");
         }
 
         if (dados.idVeterinario() != null && !veterinarioRepository.existsById(dados.idVeterinario())) {
@@ -41,13 +41,13 @@ public class AgendaDeConsultas {
 
         validadores.forEach(v -> v.validar(dados));
 
-        var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
+        var animal = animalRepository.getReferenceById(dados.idAnimal());
         var veterinario = escolherVeterinario(dados);
         if (veterinario == null) {
             throw new ValidacaoException("Não existe médico disponível nessa data!");
         }
 
-        var consulta = new Consulta(null, veterinario, paciente, dados.data(), null);
+        var consulta = new Consulta(null, veterinario, animal, dados.data(), null);
         consultaRepository.save(consulta);
 
         return new DadosDetalhamentoConsulta(consulta);

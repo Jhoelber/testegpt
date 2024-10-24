@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
 
-    boolean existsByPacienteIdAndDataBetween(Long idPaciente, LocalDateTime primeiroHorario, LocalDateTime ultimoHorario);
+    boolean existsByAnimalIdAndDataBetween(Long idAnimal, LocalDateTime primeiroHorario, LocalDateTime ultimoHorario);
 
     boolean existsByVeterinarioIdAndDataAndMotivoCancelamentoIsNull(Long idVeterinario, LocalDateTime data);
 }

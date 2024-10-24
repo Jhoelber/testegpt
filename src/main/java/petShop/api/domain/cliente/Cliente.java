@@ -1,46 +1,53 @@
-package petShop.api.domain.paciente;
+package petShop.api.domain.cliente;
+
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import petShop.api.domain.animal.Animal;
 import petShop.api.domain.endereco.Endereco;
 
-@Table(name = "pacientes")
-@Entity(name = "Paciente")
+import java.util.ArrayList;
+import java.util.List;
+
+@Table(name = "clientes")
+@Entity(name = "Cliente")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Paciente {
+public class Cliente {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String email;
-
-
     private String telefone;
-
+    private String email;
     private String cpf;
 
     @Embedded
     private Endereco endereco;
 
-    private Dono dono
+    @OneToMany(mappedBy = "cliente")
+    private List<Animal> animais = new ArrayList<>();
+
     private Boolean ativo;
 
-    public Paciente(DadosCadastroPaciente dados) {
+    public Cliente(DadosCadastroCliente dados) {
         this.ativo = true;
         this.nome = dados.nome();
-        this.email = dados.email();
         this.telefone = dados.telefone();
+        this.email = dados.email();
         this.cpf = dados.cpf();
         this.endereco = new Endereco(dados.endereco());
     }
 
-    public void atualizarInformacoes(DadosAtualizacaoPaciente dados) {
+
+    public void atualizarInformacoes(@Valid DadosAtualizacaoCliente dados) {
         if (dados.nome() != null) {
             this.nome = dados.nome();
         }
@@ -53,7 +60,24 @@ public class Paciente {
 
     }
 
+    public void atualizarInformacoes(DadosCadastroCliente cliente) {
+        if (cliente.nome() != null) {
+            this.nome = cliente.nome();
+        }
+        if (cliente.telefone() != null) {
+            this.telefone = cliente.telefone();
+        }
+        if (cliente.endereco() != null) {
+            this.endereco.atualizarInformacoes(cliente.endereco());
+        }
+
+    }
+
     public void excluir() {
         this.ativo = false;
     }
+
+
 }
+
+

@@ -31,10 +31,10 @@ class VeterinarioControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    private JacksonTester<DadosCadastroVeterinario> dadosCadastroMedicoJson;
+    private JacksonTester<DadosCadastroVeterinario> dadosCadastroVeterinarioJson;
 
     @Autowired
-    private JacksonTester<DadosDetalhamentoVeterinario> dadosDetalhamentoMedicoJson;
+    private JacksonTester<DadosDetalhamentoVeterinario> dadosDetalhamentoVeterinarioJson;
 
     @MockBean
     private VeterinarioRepository repository;
@@ -44,7 +44,7 @@ class VeterinarioControllerTest {
     @WithMockUser
     void cadastrar_cenario1() throws Exception {
         var response = mvc
-                .perform(post("/medicos"))
+                .perform(post("/veterinarios"))
                 .andReturn().getResponse();
 
         assertThat(response.getStatus())
@@ -56,19 +56,19 @@ class VeterinarioControllerTest {
     @WithMockUser
     void cadastrar_cenario2() throws Exception {
         var dadosCadastro = new DadosCadastroVeterinario(
-                "Medico",
+                "Veterinario",
                 "medico@voll.med",
                 "61999999999",
                 "123456",
                 Especialidade.CARDIOLOGIA,
                 dadosEndereco());
 
-        when(repository.save(any())).thenReturn(new Medico(dadosCadastro));
+        when(repository.save(any())).thenReturn(new Veterinario(dadosCadastro));
 
         var response = mvc
-                .perform(post("/medicos")
+                .perform(post("/veterinarios")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(dadosCadastroMedicoJson.write(dadosCadastro).getJson()))
+                        .content(dadosCadastroVeterinarioJson.write(dadosCadastro).getJson()))
                 .andReturn().getResponse();
 
         var dadosDetalhamento = new DadosDetalhamentoVeterinario(
@@ -80,7 +80,7 @@ class VeterinarioControllerTest {
                 dadosCadastro.especialidade(),
                 new Endereco(dadosCadastro.endereco())
         );
-        var jsonEsperado = dadosDetalhamentoMedicoJson.write(dadosDetalhamento).getJson();
+        var jsonEsperado = dadosDetalhamentoVeterinarioJson.write(dadosDetalhamento).getJson();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);

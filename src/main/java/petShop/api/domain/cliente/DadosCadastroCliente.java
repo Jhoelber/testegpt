@@ -1,4 +1,4 @@
-package petShop.api.domain.paciente;
+package petShop.api.domain.cliente;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import petShop.api.domain.endereco.DadosEndereco;
 
-public record DadosCadastroPaciente(
+public record DadosCadastroCliente(
         @NotBlank
         String nome,
         @NotBlank
@@ -20,5 +20,10 @@ public record DadosCadastroPaciente(
         @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}")
         String cpf,
 
-        @NotNull @Valid DadosEndereco endereco) {
+        @NotNull
+        @Valid
+        DadosEndereco endereco) {
+
+
 }
+

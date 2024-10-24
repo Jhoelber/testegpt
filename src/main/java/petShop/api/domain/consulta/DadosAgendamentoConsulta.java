@@ -10,7 +10,7 @@ public record DadosAgendamentoConsulta(
         Long idVeterinario,
 
         @NotNull
-        Long idPaciente,
+        Long idAnimal,
 
         @NotNull
         @Future

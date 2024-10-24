@@ -1,9 +1,9 @@
-package petShop.api.domain.paciente;
+package petShop.api.domain.cliente;
 
 import jakarta.validation.constraints.NotNull;
 import petShop.api.domain.endereco.DadosEndereco;
 
-public record DadosAtualizacaoPaciente(
+public record DadosAtualizacaoCliente(
         @NotNull
         Long id,
         String nome,
