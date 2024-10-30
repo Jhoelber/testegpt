@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import petShop.api.domain.endereco.Endereco;
 
 
-@Table(name = "funcionario")
+@Table(name = "funcionarios")
 @Entity(name = "Funcionario")
 @Getter
 @NoArgsConstructor
@@ -26,11 +26,7 @@ public class Funcionario {
 
     @Embedded
     private Endereco endereco;
-<<<<<<< HEAD:src/main/java/petShop/api/domain/funcionario/Funcionario.java
-=======
 
-   
->>>>>>> 975adcc87e19ce6b4d90ee722125a1055b0e059b:src/main/java/petShop/api/domain/paciente/Paciente.java
     private Boolean ativo;
 
     public Funcionario(DadosCadastroFuncionario dados) {

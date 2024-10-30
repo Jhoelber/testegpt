@@ -12,6 +12,7 @@
         numero varchar(20),
         uf char(2) not null,
         cidade varchar(100) not null,
+         ativo TINYINT NOT NULL,
 
     primary key(id)
 );

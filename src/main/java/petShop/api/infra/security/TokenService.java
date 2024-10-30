@@ -18,18 +18,23 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String gerarToken(Usuario usuario) {
-        try {
-            var algoritmo = Algorithm.HMAC256(secret);
-            return JWT.create()
-                    .withIssuer("API petShop")
-                    .withSubject(usuario.getLogin())
-                    .withExpiresAt(dataExpiracao())
-                    .sign(algoritmo);
-        } catch (JWTCreationException exception){
-            throw new RuntimeException("erro ao gerar token jwt", exception);
+        public String gerarToken(Usuario usuario) {
+            try {
+                var algoritmo = Algorithm.HMAC256(secret);
+
+               var token= JWT.create()
+                        .withIssuer("API petShop")
+                        .withSubject(usuario.getLogin())
+                        .withExpiresAt(dataExpiracao())
+                        .sign(algoritmo);
+                System.out.println("Token gerado: " + token);
+                return token;
+
+            } catch (JWTCreationException exception){
+
+                throw new RuntimeException("erro ao gerar token jwt", exception);
+            }
         }
-    }
 
     public String getSubject(String tokenJWT) {
         try {
