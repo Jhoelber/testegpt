@@ -22,7 +22,7 @@ O aplicativo para petShop visa melhorar o gerenciamento dos estabelecimento gera
 
 ## 📄 Documentação
 
-A documentação das funcionalidades da aplicação pode ser acessada neste link: <a href="https://trello.com/b/O0lGCsKb/api-voll-med">Trello</a>
+utilizado swagger para documentação da API
 
 ---
 
@@ -40,12 +40,4 @@ As seguintes tecnologias foram utilizadas no desenvolvimento da API Rest do proj
 
 ---
 
-## 📝 Licença
 
-Projeto desenvolvido por [Alura](https://www.alura.com.br) e utilizado nos cursos de Spring Boot.
-
-Instrutor: [Rodrigo Ferreira](https://cursos.alura.com.br/user/rodrigo-ferreira) 
-
----
-=======
->>>>>>> 8c0813ce818743df83670cf064564e00c9ba4041
