@@ -1,25 +1,24 @@
 ## 💻 Sobre o projeto
 
-Voll.med é uma clínica médica fictícia que precisa de um aplicativo para gestão de consultas. O aplicativo deve possuir funcionalidades que permitam o cadastro de médicos e de pacientes, e também o agendamento e cancelamento de consultas.
-
-Enquanto um time de desenvolvimento será responsável pelo aplicativo mobile, o nosso será responsável pelo desenvolvimento da API Rest desse projeto.
-
+O aplicativo para petShop visa melhorar o gerenciamento dos estabelecimento gerando relatórios que iram mitigar as perdas
 ---
 
 ## ⚙️ Funcionalidades
 
-- [x] CRUD de médicos;
-- [x] CRUD de pacientes;
+- [x] CRUD de veterinarios;
+- [x] CRUD de animais;
+- [x] CRUD de clientes;
+- [x] CRUD de produtos;
+- [x] CRUD de funcionarios;
+- 
+- [x] Criar usuario;
+-
 - [x] Agendamento de consultas;
 - [x] Cancelamento de consultas.
 
 ---
 
-## 🎨 Layout
 
-O layout da aplicação mobile está disponível neste link: <a href="https://www.figma.com/file/N4CgpJqsg7gjbKuDmra3EV/Voll.med">Figma</a>
-
----
 
 ## 📄 Documentação
 
