@@ -1,5 +1,5 @@
-## 💻 Sobre o projeto
 
+<<<<<<< HEAD
 O aplicativo para petShop visa melhorar o gerenciamento dos estabelecimento gerando relatórios que iram mitigar as perdas
 ---
 
@@ -47,3 +47,5 @@ Projeto desenvolvido por [Alura](https://www.alura.com.br) e utilizado nos curso
 Instrutor: [Rodrigo Ferreira](https://cursos.alura.com.br/user/rodrigo-ferreira) 
 
 ---
+=======
+>>>>>>> 8c0813ce818743df83670cf064564e00c9ba4041
