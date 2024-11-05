@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
@@ -26,11 +25,13 @@ public class SecurityConfigurations {
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests()
+                // Primeiro, permite acesso às rotas públicas
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/usuarios/registrar").permitAll()
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                // Define as permissões de acesso para ADMIN e USER
+                .requestMatchers("/produtos/**", "/clientes/**", "/animais/**", "/consulta/**").hasRole("USER")
                 .requestMatchers("/**").hasRole("ADMIN")
-                .requestMatchers("/produtos/**", "/clientes/**", "/animais/**","/consulta/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

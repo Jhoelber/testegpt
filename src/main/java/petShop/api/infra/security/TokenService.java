@@ -39,12 +39,14 @@ public class TokenService {
     public String getSubject(String tokenJWT) {
         try {
             var algoritmo = Algorithm.HMAC256(secret);
+            System.out.println(algoritmo);
             return JWT.require(algoritmo)
                     .withIssuer("API petShop")
                     .build()
                     .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception) {
+
             throw new RuntimeException("Token JWT inválido ou expirado!");
         }
     }

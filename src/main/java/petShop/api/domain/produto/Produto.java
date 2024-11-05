@@ -3,10 +3,8 @@ package petShop.api.domain.produto;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import petShop.api.domain.venda.Venda;
 
 @Table(name = "produtos")
 @Entity(name = "Produto")
@@ -29,6 +27,12 @@ public class Produto {
     private UnidadeDeMedida unidadeDeMedida; //categoria
     private String quantidade;  //quantidade
     private String minEstoque; //MinEmEstoque
+    // Método para associar a venda ao produto
+    @Getter
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "venda_id")
+    private Venda venda;
 
     public Produto(DadosCadastroProduto dados) {
         this.ativo = true;
@@ -72,4 +76,5 @@ public class Produto {
     public void excluir() {
         this.ativo = false;
     }
+
 }

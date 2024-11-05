@@ -1,6 +1,6 @@
 package petShop.api.infra.security;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import petShop.api.domain.usuario.UserRole;
 import petShop.api.domain.usuario.Usuario;
 import petShop.api.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public void registrarUsuario(String login, String senha) {
+    public void registrarUsuario(String login, String senha, UserRole role) {
 
         if (usuarioRepository.existsByLogin(login)) {
             throw new RuntimeException("Usuário já cadastrado");
@@ -28,6 +28,7 @@ public class UsuarioService {
         Usuario novoUsuario = new Usuario();
         novoUsuario.setLogin(login);
         novoUsuario.setSenha(senhaCodificada);
+        novoUsuario.setRole(role);
 
         usuarioRepository.save(novoUsuario);
     }

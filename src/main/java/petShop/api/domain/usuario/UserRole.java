@@ -1,15 +1,20 @@
 package petShop.api.domain.usuario;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
-    ADMIN("admin"),
-    USER("user");
+    ADMIN("ADMIN"),
+    USER("USER");
 
-    private String role;
+    private final String role;
 
-    UserRole(String role){
+    UserRole(String role) {
         this.role = role;
     }
-    public String getRole() {
-        return role;
 
-    }}
+    @Override
+    public String toString() {
+        return this.role;
+    }
+}
