@@ -1,15 +1,13 @@
 package petShop.api.domain.veterinario;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import petShop.api.domain.endereco.Endereco;
 
 @Table(name = "veterinarios")
 @Entity(name = "Veterinario")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")

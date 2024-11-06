@@ -5,7 +5,7 @@
     telefone varchar(100) not null,
     cargo  varchar(100) not null,
     email varchar(100) not null,
-    endereco_id BIGINT,
+    endereco_id BIGINT UNIQUE,
     FOREIGN KEY (endereco_id) REFERENCES enderecos(id),
     ativo TINYINT NOT NULL,
 

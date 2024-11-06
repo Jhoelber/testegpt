@@ -7,6 +7,7 @@ CREATE TABLE enderecos (
     numero VARCHAR(20),
     uf CHAR(2) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
+
+
     PRIMARY KEY (id)
 );

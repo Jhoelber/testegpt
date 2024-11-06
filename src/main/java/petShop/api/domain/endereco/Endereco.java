@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "enderecos")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Endereco {
@@ -43,4 +45,6 @@ public class Endereco {
         if (dados.numero() != null) this.numero = dados.numero();
         if (dados.complemento() != null) this.complemento = dados.complemento();
     }
+
+
 }
