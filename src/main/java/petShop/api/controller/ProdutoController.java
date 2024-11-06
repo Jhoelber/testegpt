@@ -18,7 +18,7 @@ import petShop.api.domain.produto.DadosListagemProduto;
 import petShop.api.domain.produto.Produto;
 import petShop.api.domain.produto.ProdutoRepository;
 
-@CrossOrigin(origins = "http://localhost:5173")
+
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
@@ -26,14 +26,14 @@ public class ProdutoController {
     @Autowired
     private ProdutoRepository repository;
 
-    @CrossOrigin(origins = "http://localhost:5173")
+
     @PostMapping
     @Transactional
     public void cadastrar(@RequestBody @Valid DadosCadastroProduto dados) {
         repository.save(new Produto(dados));
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
+
     @GetMapping
     public Page<DadosListagemProduto> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
 
@@ -42,7 +42,6 @@ public class ProdutoController {
 
     @PutMapping
     @Transactional
-    @CrossOrigin(origins = "http://localhost:5173")
     public void atualizar(@RequestBody @Valid DadosAtualizarProduto dados){
     var produto = repository.getReferenceById(dados.id());
         produto.atualizarInformacoes(dados);
@@ -51,7 +50,6 @@ public class ProdutoController {
 
    @PutMapping("/{id}")
     @Transactional
-    @CrossOrigin(origins = "http://localhost:5173")
     public void atualizar(@PathVariable long id, @RequestBody @Valid DadosAtualizarProduto dados) {
         var produto = repository.getReferenceById(id);
         produto.atualizarInformacoes(dados);
@@ -59,7 +57,7 @@ public class ProdutoController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    @CrossOrigin(origins = "http://localhost:5173")
+
     public void excluir(@PathVariable long id){
         var produto = repository.getReferenceById(id);
         produto.excluir();

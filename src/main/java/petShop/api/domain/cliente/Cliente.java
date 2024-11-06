@@ -29,7 +29,8 @@ public class Cliente {
     private String email;
     private String cpf;
 
-    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
     @OneToMany(mappedBy = "cliente")

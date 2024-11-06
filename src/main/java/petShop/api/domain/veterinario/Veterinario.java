@@ -19,22 +19,22 @@ public class Veterinario {
     private Long id;
     private String nome;
     private String email;
-
+    private String cpf;
     private String telefone;
 
     private String crm;
 
     @Enumerated(EnumType.STRING)
     private Especialidade especialidade;
-
-    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
-
     private Boolean ativo;
 
     public Veterinario(DadosCadastroVeterinario dados) {
         this.ativo = true;
         this.nome = dados.nome();
+        this.cpf = dados.cpf();
         this.email = dados.email();
         this.telefone = dados.telefone();
         this.crm = dados.crm();

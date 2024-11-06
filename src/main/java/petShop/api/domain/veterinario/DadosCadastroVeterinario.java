@@ -13,7 +13,8 @@ public record DadosCadastroVeterinario(
         @NotBlank
         @Email
         String email,
-
+        @NotBlank
+        String cpf,
         @NotBlank
         String telefone,
         @NotBlank

@@ -2,6 +2,7 @@ package petShop.api.domain.venda;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.parameters.P;
 import petShop.api.domain.cliente.Cliente;
 import petShop.api.domain.funcionario.Funcionario;
 import petShop.api.domain.produto.Produto;
@@ -32,11 +33,21 @@ public class Venda {
     @JoinColumn(name = "funcionario_id", nullable = false)
     private Funcionario funcionario;
 
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Produto> produto = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "venda_produto",
+            joinColumns = @JoinColumn(name = "venda_id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id")
+    )
+    private List<Produto> produtos;
 
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Servico> servico = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "venda_servico",
+            joinColumns = @JoinColumn(name = "venda_id"),
+            inverseJoinColumns = @JoinColumn(name = "servico_id")
+    )
+    private List<Servico> servicos;
 
     private int quantidade;
     private LocalDateTime dataHora;
@@ -44,6 +55,7 @@ public class Venda {
     private double valorTotal;
     @Enumerated(EnumType.STRING)
     private TipoVenda tipoVenda;
+
 
     public Venda(Cliente cliente,
                  Funcionario funcionario,
@@ -57,8 +69,8 @@ public class Venda {
 
         this.cliente = cliente;
         this.funcionario = funcionario;
-        this.produto = produto;
-        this.servico = servico;
+        this.produtos = produto;
+        this.servicos = servico;
         this.quantidade = quantidade;
         this.dataHora = dataHora;
         this.formaPagamento = formaPagamento;

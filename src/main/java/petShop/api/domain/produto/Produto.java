@@ -27,12 +27,6 @@ public class Produto {
     private UnidadeDeMedida unidadeDeMedida; //categoria
     private String quantidade;  //quantidade
     private String minEstoque; //MinEmEstoque
-    // Método para associar a venda ao produto
-    @Getter
-    @Setter
-    @ManyToOne
-    @JoinColumn(name = "venda_id")
-    private Venda venda;
 
     public Produto(DadosCadastroProduto dados) {
         this.ativo = true;

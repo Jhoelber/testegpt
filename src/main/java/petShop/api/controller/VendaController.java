@@ -55,23 +55,27 @@ public class VendaController {
         novaVenda.setValorTotal(dadosVenda.getValorTotal());
 
 
-        if (dadosVenda.getProdutoId() != null) { // Aqui deve ser uma lista
-            Produto produto = produtoRepository.findById(dadosVenda.getProdutoId())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-            produto.setVenda(novaVenda); // Associar produto à venda
-            novaVenda.getProduto().add(produto); // Adicionar à lista de produtos
+        if (dadosVenda.getProdutoIds() != null && !dadosVenda.getProdutoIds().isEmpty()) {
+            for (Long produtoId : dadosVenda.getProdutoIds()) {
+                Produto produto = produtoRepository.findById(produtoId)
+                        .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                novaVenda.getProdutos().add(produto);
+            }
         }
 
 
-        if (dadosVenda.getServicoId() != null) {
-            Servico servico = servicoRepository.findById(dadosVenda.getServicoId())
-                    .orElseThrow(() -> new RuntimeException("Servico não encontrado"));
-            servico.setVenda(novaVenda);
-            novaVenda.getServico().add(servico);
+        if (dadosVenda.getServicoIds() != null && !dadosVenda.getServicoIds().isEmpty()) {
+            for (Long servicoId : dadosVenda.getServicoIds()) {
+                Servico servico = servicoRepository.findById(servicoId)
+                        .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+                novaVenda.getServicos().add(servico);
+            }
         }
 
         vendaRepository.save(novaVenda);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(novaVenda);
     }
+
+
 }

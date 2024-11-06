@@ -23,8 +23,9 @@ public class Funcionario {
     private String telefone;
     private String cargo;
     private String email;
-
-    @Embedded
+    private String cpf;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
     private Boolean ativo;

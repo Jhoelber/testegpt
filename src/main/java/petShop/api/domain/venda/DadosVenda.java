@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class DadosVenda {
@@ -14,8 +16,8 @@ public class DadosVenda {
     @NotNull
     private Long funcionarioId;
 
-    private Long produtoId;
-    private Long servicoId;
+    private List<Long> produtoIds;
+    private List<Long> servicoIds;
 
     @NotNull
     private int quantidade;
@@ -29,11 +31,11 @@ public class DadosVenda {
     private TipoVenda tipoVenda;
 
 
-    public DadosVenda(Long clienteId, Long funcionarioId, Long produtoId, Long servicoId, int quantidade, String formaPagamento, double valorTotal, TipoVenda tipoVenda) {
+    public DadosVenda(Long clienteId, Long funcionarioId, List<Long> produtoIds, List<Long> servicoIds, int quantidade, String formaPagamento, double valorTotal, TipoVenda tipoVenda) {
         this.clienteId = clienteId;
         this.funcionarioId = funcionarioId;
-        this.produtoId = produtoId;
-        this.servicoId = servicoId;
+        this.produtoIds = produtoIds;
+        this.servicoIds = servicoIds;
         this.quantidade = quantidade;
         this.formaPagamento = formaPagamento;
         this.valorTotal = valorTotal;

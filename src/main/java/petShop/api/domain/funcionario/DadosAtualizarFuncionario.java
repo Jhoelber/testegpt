@@ -11,6 +11,7 @@ public record DadosAtualizarFuncionario(
       String telefone,
       String cargo,
       String ativo,
+      String cpf,
       DadosEndereco endereco,
       String email
 

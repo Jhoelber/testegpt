@@ -10,6 +10,7 @@ public record DadosListagemFuncionario(
         String cargo,
         Endereco endereco,
         Boolean ativo,
+        String cpf,
         String email) {
 
 
@@ -20,6 +21,7 @@ public record DadosListagemFuncionario(
                         funcionario.getCargo(),
                 funcionario.getEndereco(),
                 funcionario.getAtivo(),
+                funcionario.getCpf(),
                 funcionario.getEmail()
                 );
 

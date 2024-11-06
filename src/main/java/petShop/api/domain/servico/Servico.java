@@ -20,9 +20,6 @@ public class Servico {
 
     private String nome;
     private double preco;
-    @Setter
-    @ManyToOne
-    @JoinColumn(name = "venda_id")
-    private Venda venda;
+
 
 }

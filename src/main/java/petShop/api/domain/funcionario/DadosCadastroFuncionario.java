@@ -13,7 +13,8 @@ public record DadosCadastroFuncionario(
         String telefone,
         @NotBlank
         String cargo,
-
+        @NotBlank
+        String cpf,
         @NotBlank
         String email,
         @NotNull
