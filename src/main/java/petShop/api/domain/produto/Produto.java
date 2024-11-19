@@ -9,6 +9,7 @@ import petShop.api.domain.venda.Venda;
 @Table(name = "produtos")
 @Entity(name = "Produto")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of ="id")
@@ -18,22 +19,22 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private String codigo; //codigo
-    private String valorCompra;//valorCompra
-    private String valorVenda;//valorVenda
-    private Boolean ativo;
+    private String codigo;
+    private int valorCompra;
+    private int valorVenda;
     private String categoria;
     @Enumerated(EnumType.STRING)
-    private UnidadeDeMedida unidadeDeMedida; //categoria
-    private String quantidade;  //quantidade
-    private String minEstoque; //MinEmEstoque
+    private UnidadeDeMedida unidadeDeMedida;
+    private String quantidade;
+    private String minEstoque;
+    private boolean ativo;
 
     public Produto(DadosCadastroProduto dados) {
         this.ativo = true;
         this.nome = dados.nome();
         this.codigo = dados.codigo();
-        this.valorCompra = dados.valorCompra();
-        this.valorVenda = dados.valorVenda();
+        this.valorCompra = Integer.parseInt(dados.valorCompra());
+        this.valorVenda = Integer.parseInt(dados.valorVenda());
         this.unidadeDeMedida = dados.unidadeDeMedida();
         this.quantidade =  dados.quantidade();
         this.minEstoque =  dados.minEstoque();
@@ -54,10 +55,10 @@ public class Produto {
               this.unidadeDeMedida = UnidadeDeMedida.valueOf(dados.unidadeDeMedida());
           }
           if(dados.valorCompra() != null){
-              this.valorCompra = dados.valorCompra();
+              this.valorCompra = Integer.parseInt(dados.valorCompra());
           }
           if(dados.valorVenda() != null){
-              this.valorVenda = dados.valorVenda();
+              this.valorVenda = Integer.parseInt(dados.valorVenda());
           }
           if(dados.codigo() != null){
               this.codigo = dados.codigo();

@@ -55,22 +55,6 @@ public class VendaController {
         novaVenda.setValorTotal(dadosVenda.getValorTotal());
 
 
-        if (dadosVenda.getProdutoIds() != null && !dadosVenda.getProdutoIds().isEmpty()) {
-            for (Long produtoId : dadosVenda.getProdutoIds()) {
-                Produto produto = produtoRepository.findById(produtoId)
-                        .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-                novaVenda.getProdutos().add(produto);
-            }
-        }
-
-
-        if (dadosVenda.getServicoIds() != null && !dadosVenda.getServicoIds().isEmpty()) {
-            for (Long servicoId : dadosVenda.getServicoIds()) {
-                Servico servico = servicoRepository.findById(servicoId)
-                        .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
-                novaVenda.getServicos().add(servico);
-            }
-        }
 
         vendaRepository.save(novaVenda);
 
