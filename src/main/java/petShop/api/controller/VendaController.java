@@ -6,15 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import petShop.api.domain.cliente.Cliente;
-import petShop.api.domain.funcionario.Funcionario;
-import petShop.api.domain.produto.Produto;
-import petShop.api.domain.servico.Servico;
+
+import petShop.api.domain.usuario.Usuario;
+import petShop.api.domain.usuario.UsuarioRepository;
 import petShop.api.domain.venda.DadosVenda;
 import org.springframework.http.HttpStatus;
 import petShop.api.domain.venda.Venda;
 import petShop.api.domain.venda.VendaRepository;
 import petShop.api.domain.cliente.ClienteRepository;
-import petShop.api.domain.funcionario.FuncionarioRepository;
+
 import petShop.api.domain.produto.ProdutoRepository;
 import petShop.api.domain.servico.ServicoRepository;
 
@@ -29,7 +29,7 @@ public class VendaController {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private FuncionarioRepository funcionarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -45,12 +45,12 @@ public class VendaController {
         Cliente cliente = clienteRepository.findById(dadosVenda.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        Funcionario funcionario = funcionarioRepository.findById(dadosVenda.getFuncionarioId())
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+        Usuario usuario = usuarioRepository.findById(dadosVenda.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
 
         Venda novaVenda = new Venda();
         novaVenda.setCliente(cliente);
-        novaVenda.setFuncionario(funcionario);
+        novaVenda.setUsuario(usuario);
         novaVenda.setFormaPagamento(dadosVenda.getFormaPagamento());
         novaVenda.setValorTotal(dadosVenda.getValorTotal());
 

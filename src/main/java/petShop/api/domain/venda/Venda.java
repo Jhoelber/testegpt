@@ -3,8 +3,9 @@ package petShop.api.domain.venda;
 import jakarta.persistence.*;
 import lombok.*;
 import petShop.api.domain.cliente.Cliente;
-import petShop.api.domain.funcionario.Funcionario;
+
 import petShop.api.domain.itensVenda.ItensVenda;
+import petShop.api.domain.usuario.Usuario;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Venda {
 
     @ManyToOne
     @JoinColumn(name = "funcionario_id", nullable = false)
-    private Funcionario funcionario;
+    private Usuario usuario;
 
     private int quantidade;
     private LocalDateTime dataHora;
@@ -43,7 +44,7 @@ public class Venda {
     private List<ItensVenda> itensVenda;
 
     public Venda(Cliente cliente,
-                 Funcionario funcionario,
+                 Usuario usuario,
                  int quantidade,
                  LocalDateTime dataHora,
                  String formaPagamento,
@@ -52,7 +53,7 @@ public class Venda {
                  List<ItensVenda> itensVenda) {
 
         this.cliente = cliente;
-        this.funcionario = funcionario;
+        this.usuario = usuario;
         this.quantidade = quantidade;
         this.dataHora = dataHora;
         this.formaPagamento = formaPagamento;

@@ -1,7 +1,7 @@
 CREATE TABLE itensvenda (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     venda_id BIGINT NOT NULL,
-    produto_id BIGINT,
+    produto_id BIGINT ,
     servico_id BIGINT,
     quantidade INT NOT NULL,
     valor_unitario DECIMAL(10, 2) NOT NULL,

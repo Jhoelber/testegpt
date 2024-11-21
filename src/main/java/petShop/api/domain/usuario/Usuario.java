@@ -6,6 +6,8 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import petShop.api.domain.endereco.Endereco;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -22,19 +25,26 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
-    @Setter
     @NotBlank(message = "Login é obrigatório")
     private String login;
 
-    @Setter
-    @Getter
     @NotBlank(message = "Senha é obrigatória")
     private String senha;
-    @Setter
-    @Getter
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    private String nome;
+    private String telefone;
+    private String cargo;
+    private String email;
+    private String cpf;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+
+    private Boolean ativo;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -46,6 +56,29 @@ public class Usuario implements UserDetails {
         } else {
             return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         }
+    }
+
+    public void atualizarInformacoes(DadosAtualizarUsuario dados) {
+        if(dados.nome() != null){
+            this.nome = dados.nome();
+        }
+
+        if(dados.telefone() != null){
+            this.telefone = dados.telefone();
+        }
+
+        if(dados.cargo() != null){
+            this.cargo = dados.cargo();
+        }
+
+        if (dados.endereco() != null) {
+            this.endereco.atualizarInformacoes(dados.endereco());
+        }
+
+        if(dados.email() != null){
+            this.email = dados.email();
+        }
+
     }
 
     @Override

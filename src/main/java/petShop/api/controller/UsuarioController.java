@@ -1,15 +1,20 @@
 package petShop.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
-import petShop.api.domain.usuario.DadosRegistroUsuario;
-import petShop.api.domain.usuario.UserRole;
-import petShop.api.domain.usuario.Usuario;
-import petShop.api.domain.usuario.UsuarioRepository;
+import petShop.api.domain.endereco.Endereco;
+import petShop.api.domain.endereco.DadosEndereco;
+import petShop.api.domain.endereco.EnderecoRepository;
+import petShop.api.domain.funcionario.DadosListagemUsuario;
+import petShop.api.domain.usuario.*;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -19,16 +24,17 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private EnderecoRepository enderecoRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarUsuario(@RequestBody @Valid DadosRegistroUsuario dados) {
-        // Verifica se o login já existe
+
         if (usuarioRepository.existsByLogin(dados.login())) {
             return ResponseEntity.badRequest().body("Usuário com esse login já existe.");
         }
 
-        // Tenta converter a string do role para UserRole
         UserRole userRole;
         try {
             userRole = UserRole.valueOf(dados.role());
@@ -36,16 +42,57 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Role inválida.");
         }
 
-        // Codifica a senha
         String senhaCodificada = passwordEncoder.encode(dados.senha());
 
-        // Cria e salva o novo usuário
-        Usuario novoUsuario = new Usuario(null, dados.login(), senhaCodificada, userRole);
+        Endereco dadosEndereco = dados.endereco();
+        if (dadosEndereco.getUf() == null || dadosEndereco.getUf().isEmpty()) {
+            return ResponseEntity.badRequest().body("O campo 'uf' não pode ser nulo ou vazio.");
+        }
+
+        Endereco novoEndereco = dadosEndereco;  // Usando diretamente o objeto DadosEndereco
+
+        enderecoRepository.save(novoEndereco);
+
+        Usuario novoUsuario = new Usuario(
+                null,
+                dados.login(),
+                senhaCodificada,
+                userRole,
+                dados.nome(),
+                dados.telefone(),
+                dados.cargo(),
+                dados.email(),
+                dados.cpf(),
+                novoEndereco,
+                true
+        );
+
         usuarioRepository.save(novoUsuario);
 
         return ResponseEntity.ok("Usuário registrado com sucesso");
     }
 
+    @CrossOrigin(origins = "http://localhost:5173")
+    @GetMapping
+    public Page<DadosListagemUsuario> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+        return usuarioRepository.findAll(paginacao).map(DadosListagemUsuario::new);
+    }
 
+    @PutMapping("/{id}")
+    @Transactional
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ResponseEntity<?> atualizar(@PathVariable long id, @RequestBody @Valid DadosAtualizarUsuario dados) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuario.atualizarInformacoes(dados);
+        return ResponseEntity.ok("Usuário atualizado com sucesso");
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    @CrossOrigin(origins = "http://localhost:5173")
+    public ResponseEntity<?> excluir(@PathVariable long id) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuarioRepository.delete(usuario);
+        return ResponseEntity.ok("Usuário excluído com sucesso");
+    }
 
 }

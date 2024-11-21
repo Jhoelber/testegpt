@@ -14,7 +14,7 @@ public class DadosVenda {
     private Long clienteId;
 
     @NotNull
-    private Long funcionarioId;
+    private Long usuarioId;
 
     private List<Long> produtoIds;
     private List<Long> servicoIds;
@@ -31,9 +31,9 @@ public class DadosVenda {
     private TipoVenda tipoVenda;
 
 
-    public DadosVenda(Long clienteId, Long funcionarioId, List<Long> produtoIds, List<Long> servicoIds, int quantidade, String formaPagamento, double valorTotal, TipoVenda tipoVenda) {
+    public DadosVenda(Long clienteId, Long usuarioId, List<Long> produtoIds, List<Long> servicoIds, int quantidade, String formaPagamento, double valorTotal, TipoVenda tipoVenda) {
         this.clienteId = clienteId;
-        this.funcionarioId = funcionarioId;
+        this.usuarioId = usuarioId;
         this.produtoIds = produtoIds;
         this.servicoIds = servicoIds;
         this.quantidade = quantidade;
@@ -41,4 +41,6 @@ public class DadosVenda {
         this.valorTotal = valorTotal;
         this.tipoVenda = tipoVenda;
     }
+
+
 }

@@ -8,7 +8,7 @@ create table veterinarios(
     telefone varchar(100) not null,
     especialidade varchar(100) not null,
     ativo TINYINT NOT NULL,
-    endereco_id BIGINT UNIQUE,
+    endereco_id BIGINT UNIQUE NOT NULL,
     FOREIGN KEY (endereco_id) REFERENCES enderecos(id),
     primary key(id)
 

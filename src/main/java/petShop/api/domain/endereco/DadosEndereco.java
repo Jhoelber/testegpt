@@ -1,12 +1,9 @@
 package petShop.api.domain.endereco;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record DadosEndereco(
-        @NotNull
-        Long id,
         @NotBlank
         String logradouro,
         @NotBlank
@@ -18,7 +15,9 @@ public record DadosEndereco(
         String cidade,
         @NotBlank
         String uf,
+        @NotBlank
         String complemento,
+        @NotBlank
         String numero) {
 
 }

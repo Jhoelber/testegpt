@@ -4,14 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import petShop.api.domain.cliente.Cliente;
 import petShop.api.domain.cliente.ClienteRepository;
-import petShop.api.domain.funcionario.Funcionario;
-import petShop.api.domain.funcionario.FuncionarioRepository;
+
 import petShop.api.domain.produto.Produto;
 import petShop.api.domain.produto.ProdutoRepository;
 import petShop.api.domain.servico.Servico;
 import petShop.api.domain.servico.ServicoRepository;
 import petShop.api.domain.itensVenda.ItensVenda;
 import petShop.api.domain.itensVenda.ItensVendaRepository;
+import petShop.api.domain.usuario.Usuario;
+import petShop.api.domain.usuario.UsuarioRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ public class VendaService {
     @Autowired
     private ClienteRepository clienteRepository;
     @Autowired
-    private FuncionarioRepository funcionarioRepository;
+    private UsuarioRepository usuarioRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
     @Autowired
@@ -35,7 +36,7 @@ public class VendaService {
     private ItensVendaRepository itensVendaRepository;
 
     public Venda criarVenda(Long clienteId,
-                            Long funcionarioId,
+                            Long usuarioId,
                             List<Long> produtoIds,
                             List<Long> servicoIds,
                             int quantidade,
@@ -46,13 +47,13 @@ public class VendaService {
 
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        Funcionario funcionario = funcionarioRepository.findById(funcionarioId)
+        Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
 
 
         Venda novaVenda = new Venda(
                 cliente,
-                funcionario,
+                usuario,
                 quantidade,
                 LocalDateTime.now(),
                 formaPagamento,

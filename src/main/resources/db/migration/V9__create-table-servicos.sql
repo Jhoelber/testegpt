@@ -1,6 +1,6 @@
 CREATE TABLE servicos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
-    descricao TEXT,
+    descricao TEXT NOT NULL,
     preco DECIMAL(10, 2) NOT NULL
 );
