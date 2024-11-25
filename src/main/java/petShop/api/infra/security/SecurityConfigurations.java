@@ -30,7 +30,7 @@ public class SecurityConfigurations {
                 .requestMatchers(HttpMethod.POST, "/usuarios/registrar").permitAll()
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 // Define as permissões de acesso para ADMIN e USER
-                .requestMatchers("/produtos/**", "/clientes/**", "/animais/**", "/consulta/**").hasRole("USER")
+                .requestMatchers("/produtos/**", "/clientes/**", "/animais/**", "/consulta/**","/agendar/**").hasRole("USER")
                 .requestMatchers("/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

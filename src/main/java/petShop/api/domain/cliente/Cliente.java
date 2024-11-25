@@ -1,12 +1,10 @@
 package petShop.api.domain.cliente;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import petShop.api.domain.animal.Animal;
 import petShop.api.domain.endereco.Endereco;
 
@@ -16,9 +14,11 @@ import java.util.List;
 @Table(name = "clientes")
 @Entity(name = "Cliente")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+
 public class Cliente {
 
     @Id
@@ -31,9 +31,11 @@ public class Cliente {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_id")
+    @JsonIgnore
     private Endereco endereco;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonIgnore
     private List<Animal> animais = new ArrayList<>();
 
     private Boolean ativo;
@@ -46,6 +48,8 @@ public class Cliente {
         this.cpf = dados.cpf();
         this.endereco = new Endereco(dados.endereco());
     }
+
+
 
 
     public void atualizarInformacoes(@Valid DadosAtualizacaoCliente dados) {

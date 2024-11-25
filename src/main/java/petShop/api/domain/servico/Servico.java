@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import petShop.api.domain.venda.Venda;
+import petShop.api.domain.agenda.Agenda;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,6 +22,8 @@ public class Servico {
 
     private String nome;
     private double preco;
+    private String descricao;
 
-
+    @OneToMany(mappedBy = "servico")
+    private List<Agenda> agendas;
 }

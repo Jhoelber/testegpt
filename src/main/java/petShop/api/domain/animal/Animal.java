@@ -1,12 +1,13 @@
 package petShop.api.domain.animal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import petShop.api.domain.agenda.Agenda;
 import petShop.api.domain.cliente.Cliente;
 
+import java.time.LocalDate;
+import java.util.List;
 
 
 @Table(name = "animais")
@@ -23,14 +24,20 @@ public class Animal {
     private String especie;
     private String vacina;
     private String sexo;
-    private String dataNascimento;
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
     private String cor;
     private String descricao;
     private String raca;
     private String peso;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id")
+    @OneToMany(mappedBy = "animal")
+    @JsonIgnore
+    private List<Agenda> agendas;
+    @Setter
+    @Getter
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "clientes_id")
     private Cliente cliente;
 
     private Boolean ativo;
@@ -46,9 +53,9 @@ public class Animal {
         this.descricao = dados.descricao();
         this.raca = dados.raca();
         this.peso = dados.peso();
-        this.cliente = new Cliente();
-
     }
+
+
 
     public void atualizarInformacoes(DadosAtualizacaoAnimal dados) {
         if (dados.nome() != null) {
@@ -76,8 +83,6 @@ public class Animal {
             this.peso = dados.peso();
         }
 
-
-
         if (dados.cliente() != null) {
 
             this.cliente.atualizarInformacoes(dados.cliente());
@@ -88,4 +93,10 @@ public class Animal {
     public void excluir() {
         this.ativo = false;
     }
+
+    public Boolean isAtivo() {
+        return ativo;
+    }
+
+
 }

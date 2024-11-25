@@ -2,12 +2,14 @@ package petShop.api.domain.animal;
 
 import petShop.api.domain.cliente.Cliente;
 
+import java.time.LocalDate;
+
 public record DadosListagemAnimal(Long id,
                                   String nome,
                                   String especie,
                                   String vacina,
                                   String sexo,
-                                  String dataNascimento,
+                                  LocalDate dataNascimento,
                                   String cor,
                                   String descricao,
                                   String raca,

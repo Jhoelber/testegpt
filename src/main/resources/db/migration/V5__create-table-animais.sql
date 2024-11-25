@@ -5,14 +5,14 @@ CREATE TABLE animais (
     vacina VARCHAR(100) NOT NULL,
     sexo VARCHAR(100) NOT NULL,
     cor VARCHAR(100) NOT NULL,
-    dataNascimento DATE NOT NULL,
+    data_nascimento DATE NOT NULL,
     descricao VARCHAR(100) NOT NULL,
     raca VARCHAR(100) NOT NULL,
     peso VARCHAR(100) NOT NULL,
     ativo TINYINT NOT NULL,
      PRIMARY KEY (id),
 
-    clientes_id BIGINT,
+    clientes_id BIGINT NULL,
 
-    CONSTRAINT fk_animais_clientes_id FOREIGN KEY (clientes_id) REFERENCES clientes(id)
+   FOREIGN KEY (clientes_id) REFERENCES clientes(id)
 );

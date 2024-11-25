@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
     Page<Animal> findAllByAtivoTrue(Pageable paginacao);
 
@@ -15,4 +17,10 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
             p.id = :id
             """)
     Boolean findAtivoById(Long id);
+
+
+
+
+
+    Optional<Object> findByNomeAndEspecieAndClienteId(String nome, String especie, Long clienteId);
 }
