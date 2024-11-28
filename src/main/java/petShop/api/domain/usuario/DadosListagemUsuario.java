@@ -11,8 +11,8 @@ public record DadosListagemUsuario(
         String cargo,
         Endereco endereco,
         Boolean ativo,
-        String cpf,
-        String email) {
+        String cpf
+       ) {
 
 
     public DadosListagemUsuario(@org.jetbrains.annotations.NotNull Usuario usuario){
@@ -22,8 +22,8 @@ public record DadosListagemUsuario(
                 usuario.getCargo(),
                 usuario.getEndereco(),
                 usuario.getAtivo(),
-                usuario.getCpf(),
-                usuario.getEmail()
+                usuario.getCpf()
+
         );
 
     }

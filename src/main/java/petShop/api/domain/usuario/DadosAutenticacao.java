@@ -1,4 +1,4 @@
 package petShop.api.domain.usuario;
 
-public record DadosAutenticacao(String login, String senha, UserRole role) {
+public record DadosAutenticacao(String email, String senha, UserRole role) {
 }

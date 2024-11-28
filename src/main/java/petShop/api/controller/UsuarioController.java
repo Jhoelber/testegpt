@@ -31,8 +31,8 @@ public class UsuarioController {
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarUsuario(@RequestBody @Valid DadosRegistroUsuario dados) {
 
-        if (usuarioRepository.existsByLogin(dados.login())) {
-            return ResponseEntity.badRequest().body("Usuário com esse login já existe.");
+        if (usuarioRepository.existsByEmail(dados.email())) {
+            return ResponseEntity.badRequest().body("Usuário com esse email já existe.");
         }
 
         UserRole userRole;
@@ -49,19 +49,18 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("O campo 'uf' não pode ser nulo ou vazio.");
         }
 
-        Endereco novoEndereco = dadosEndereco;  // Usando diretamente o objeto DadosEndereco
+        Endereco novoEndereco = dadosEndereco;
 
         enderecoRepository.save(novoEndereco);
 
         Usuario novoUsuario = new Usuario(
                 null,
-                dados.login(),
+                dados.email(),
                 senhaCodificada,
                 userRole,
                 dados.nome(),
                 dados.telefone(),
                 dados.cargo(),
-                dados.email(),
                 dados.cpf(),
                 novoEndereco,
                 true

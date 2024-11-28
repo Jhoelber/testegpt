@@ -25,9 +25,8 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Login é obrigatório")
-    private String login;
-
+    @NotBlank(message = "email é obrigatório")
+    private String email;
     @NotBlank(message = "Senha é obrigatória")
     private String senha;
 
@@ -37,7 +36,7 @@ public class Usuario implements UserDetails {
     private String nome;
     private String telefone;
     private String cargo;
-    private String email;
+
     private String cpf;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_id")
@@ -75,9 +74,7 @@ public class Usuario implements UserDetails {
             this.endereco.atualizarInformacoes(dados.endereco());
         }
 
-        if(dados.email() != null){
-            this.email = dados.email();
-        }
+
 
     }
 
@@ -88,7 +85,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 
     @Override

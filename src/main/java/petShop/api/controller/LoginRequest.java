@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 public class LoginRequest {
 
-    private String login;
+    private String email;
     private String senha;
 
-    // Construtor padrão
+
     public LoginRequest() {
     }
 

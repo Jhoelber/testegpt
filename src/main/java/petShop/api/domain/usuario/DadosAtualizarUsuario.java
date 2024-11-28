@@ -11,8 +11,8 @@ public record DadosAtualizarUsuario(
                                     String cargo,
                                     String ativo,
                                     String cpf,
-                                    DadosEndereco endereco,
-                                    String email
+                                    DadosEndereco endereco
+
 ) {
 
 }

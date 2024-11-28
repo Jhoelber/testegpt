@@ -17,7 +17,7 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public void registrarUsuario(String login,
+    public void registrarUsuario(
                                  String senha,
                                  UserRole role,
                                  String nome,
@@ -25,17 +25,16 @@ public class UsuarioService {
                                  String cargo,
                                  String email,
                                  String cpf,
-
                                  Endereco endereco) {
 
-        if (usuarioRepository.existsByLogin(login)) {
+        if (usuarioRepository.existsByEmail(email)) {
             throw new RuntimeException("Usuário já cadastrado");
         }
 
         String senhaCodificada = passwordEncoder.encode(senha);
 
         Usuario novoUsuario = new Usuario();
-        novoUsuario.setLogin(login);
+
 
         novoUsuario.setSenha(senhaCodificada);
         novoUsuario.setRole(role);

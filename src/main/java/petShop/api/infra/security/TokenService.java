@@ -24,7 +24,7 @@ public class TokenService {
 
                var token= JWT.create()
                         .withIssuer("API petShop")
-                        .withSubject(usuario.getLogin())
+                        .withSubject(usuario.getEmail())
                         .withExpiresAt(dataExpiracao())
                         .sign(algoritmo);
                 System.out.println("Token gerado: " + token);
