@@ -18,6 +18,7 @@ public record DadosAtualizacaoAnimal(
         String descricao,
         String raca,
         String peso,
+        String foto,
         DadosCadastroCliente cliente) {
 
 }

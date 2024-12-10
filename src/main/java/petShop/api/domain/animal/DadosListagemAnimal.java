@@ -14,6 +14,7 @@ public record DadosListagemAnimal(Long id,
                                   String descricao,
                                   String raca,
                                   String peso,
+                                  String foto,
                                   Cliente cliente) {
 
     public DadosListagemAnimal(Animal animal) {
@@ -21,7 +22,7 @@ public record DadosListagemAnimal(Long id,
                 animal.getEspecie(), animal.getVacina(),
                 animal.getSexo(), animal.getDataNascimento(),
                 animal.getCor(), animal.getDescricao(),
-                animal.getRaca(), animal.getPeso(),
+                animal.getRaca(), animal.getPeso(),animal.getFoto(),
                 animal.getCliente());
     }
 

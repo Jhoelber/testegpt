@@ -34,6 +34,8 @@ public class SecurityConfigurations {
                 .requestMatchers("/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors()
+                .and()
                 .build();
     }
 
@@ -46,4 +48,8 @@ public class SecurityConfigurations {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
+
+
 }

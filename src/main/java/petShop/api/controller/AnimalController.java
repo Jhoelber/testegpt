@@ -51,7 +51,7 @@ public class AnimalController {
         return ResponseEntity.ok(page);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
     public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoAnimal dados) {
         var animal = repository.getReferenceById(dados.id());

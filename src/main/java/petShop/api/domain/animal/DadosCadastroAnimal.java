@@ -31,6 +31,8 @@ public record DadosCadastroAnimal(
 
         @NotBlank
         String peso,
+        @NotBlank
+        String foto,
 
         Long clientesId
 ) {

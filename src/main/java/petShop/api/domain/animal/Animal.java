@@ -30,6 +30,7 @@ public class Animal {
     private String descricao;
     private String raca;
     private String peso;
+    private String foto;
 
     @OneToMany(mappedBy = "animal")
     @JsonIgnore
@@ -53,6 +54,7 @@ public class Animal {
         this.descricao = dados.descricao();
         this.raca = dados.raca();
         this.peso = dados.peso();
+        this.foto = dados.foto();
     }
 
 

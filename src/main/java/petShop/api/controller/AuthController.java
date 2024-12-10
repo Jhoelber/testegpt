@@ -26,7 +26,6 @@ public class AuthController {
 
     @Autowired
     private TokenService tokenService;
-    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/login")
     public ResponseEntity<DadosTokenJWT> login(@RequestBody LoginRequest loginRequest) {
         try {
@@ -53,8 +52,8 @@ public class AuthController {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173") // Permitir o frontend
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Permitir os métodos
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

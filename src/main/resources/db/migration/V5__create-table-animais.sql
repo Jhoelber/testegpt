@@ -9,6 +9,7 @@ CREATE TABLE animais (
     descricao VARCHAR(100) NOT NULL,
     raca VARCHAR(100) NOT NULL,
     peso VARCHAR(100) NOT NULL,
+    foto Varchar(450) NOT NULL,
     ativo TINYINT NOT NULL,
      PRIMARY KEY (id),
 

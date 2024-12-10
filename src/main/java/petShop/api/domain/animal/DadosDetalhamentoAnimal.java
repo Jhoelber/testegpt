@@ -16,6 +16,7 @@ public record DadosDetalhamentoAnimal(
         String descricao,
         String raca,
         String peso,
+        String foto,
         Cliente cliente) {
 
     public DadosDetalhamentoAnimal(Animal animal) {
@@ -30,6 +31,7 @@ public record DadosDetalhamentoAnimal(
                 animal.getDescricao(),
                 animal.getRaca(),
                 animal.getPeso(),
+                animal.getFoto(),
                 animal.getCliente());
     }
 

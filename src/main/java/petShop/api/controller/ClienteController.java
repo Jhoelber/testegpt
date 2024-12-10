@@ -16,6 +16,7 @@ import petShop.api.domain.endereco.Endereco;
 import petShop.api.domain.endereco.EnderecoRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173/TelaAnimais")
 @RequestMapping("clientes")
 @SecurityRequirement(name = "bearer-key")
 public class ClienteController {
