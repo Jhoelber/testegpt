@@ -25,11 +25,11 @@ public class SecurityConfigurations {
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests()
-                // Primeiro, permite acesso às rotas públicas
+
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/usuarios/registrar").permitAll()
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                // Define as permissões de acesso para ADMIN e USER
+
                 .requestMatchers("/produtos/**", "/clientes/**", "/animais/**", "/consulta/**","/agendar/**").hasRole("USER")
                 .requestMatchers("/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
