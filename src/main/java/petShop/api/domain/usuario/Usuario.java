@@ -32,12 +32,11 @@ public class Usuario implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
     private String nome;
     private String telefone;
     private String cargo;
-
     private String cpf;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
