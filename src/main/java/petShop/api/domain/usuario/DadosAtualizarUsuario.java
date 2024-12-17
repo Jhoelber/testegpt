@@ -7,6 +7,7 @@ public record DadosAtualizarUsuario(
                                     @NotNull
                                     Long id,
                                     String nome,
+                                    String email,
                                     String telefone,
                                     String cargo,
                                     String ativo,

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import petShop.api.domain.endereco.Endereco;
-import petShop.api.domain.endereco.DadosEndereco;
+
 import petShop.api.domain.endereco.EnderecoRepository;
-import petShop.api.domain.funcionario.DadosListagemUsuario;
+
 import petShop.api.domain.usuario.*;
 
 @RestController

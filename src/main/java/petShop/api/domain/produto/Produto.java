@@ -7,7 +7,7 @@ import lombok.*;
 import petShop.api.domain.venda.Venda;
 
 @Table(name = "produtos")
-@Entity(name = "Produto")
+@Entity(name = "Produtos")
 @Getter
 @Setter
 @NoArgsConstructor

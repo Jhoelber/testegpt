@@ -29,7 +29,7 @@ public class Cliente {
     private String email;
     private String cpf;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "endereco_id")
     @JsonIgnore
     private Endereco endereco;

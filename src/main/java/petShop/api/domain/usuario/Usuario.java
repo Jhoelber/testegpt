@@ -38,7 +38,7 @@ public class Usuario implements UserDetails {
     private String cargo;
 
     private String cpf;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
