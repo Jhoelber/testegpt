@@ -29,7 +29,7 @@ public class SecurityConfigurations {
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/usuarios/registrar").permitAll()
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                .requestMatchers("/produtos/**", "/clientes/**", "/animais/**", "/consulta/**","/agendar/**").hasRole("USER")
+                .requestMatchers("/produtos/**", "/clientes/**", "/animais/**", "/consulta/**","/agendar/**", "/usuarios/**").hasRole("USER")
                 .requestMatchers("/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

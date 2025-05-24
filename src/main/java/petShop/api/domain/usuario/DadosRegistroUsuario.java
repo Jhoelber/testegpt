@@ -12,6 +12,7 @@ public record DadosRegistroUsuario(
         @NotBlank(message = "Cargo é obrigatório") String cargo,
 
         @NotBlank(message = "CPF é obrigatório") String cpf,
+        String crm,
         Endereco endereco
 ) {
 }

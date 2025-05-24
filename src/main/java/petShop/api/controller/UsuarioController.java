@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import petShop.api.domain.endereco.Endereco;
-
+import petShop.api.domain.endereco.DadosEndereco;
 import petShop.api.domain.endereco.EnderecoRepository;
 
 import petShop.api.domain.usuario.*;
+import petShop.api.domain.veterinario.Especialidade;
+import petShop.api.domain.veterinario.Veterinario;
+import petShop.api.domain.veterinario.VeterinarioRepository;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -25,6 +28,9 @@ public class UsuarioController {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private VeterinarioRepository veterinarioRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -68,7 +74,24 @@ public class UsuarioController {
 
         usuarioRepository.save(novoUsuario);
 
+// Se CRM estiver presente, criar também na tabela de veterinários
+        if (dados.crm() != null && !dados.crm().isBlank()) {
+            Veterinario veterinario = new Veterinario();
+            veterinario.setNome(dados.nome());
+            veterinario.setEmail(dados.email());
+            veterinario.setCpf(dados.cpf());
+            veterinario.setTelefone(dados.telefone());
+            veterinario.setCrm(dados.crm());
+            veterinario.setEspecialidade(Especialidade.MEDICINA_PEQUENOS_ANIMAIS);
+
+            veterinario.setEndereco(novoEndereco);
+            veterinario.setAtivo(true);
+
+            veterinarioRepository.save(veterinario);
+        }
+
         return ResponseEntity.ok("Usuário registrado com sucesso");
+
     }
 
     @CrossOrigin(origins = "http://localhost:5173")

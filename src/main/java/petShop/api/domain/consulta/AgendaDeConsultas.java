@@ -10,6 +10,8 @@ import petShop.api.domain.animal.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -76,5 +78,18 @@ public class AgendaDeConsultas {
 
         return veterinarioRepository.escolherVeterinarioAleatorioLivreNaData(dados.especialidade(), dados.data());
     }
+
+    public List<LocalTime> getConsultasDoDia(Long veterinarioId, LocalDate data) {
+        var consultas = consultaRepository.findByVeterinarioIdAndDataBetween(
+                veterinarioId,
+                data.atStartOfDay(),
+                data.atTime(23, 59)
+        );
+
+        return consultas.stream()
+                .map(c -> c.getData().toLocalTime())
+                .toList();
+    }
+
 
 }

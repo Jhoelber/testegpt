@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import petShop.api.domain.endereco.EnderecoRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("veterinarios")
 @SecurityRequirement(name = "bearer-key")
 public class VeterinarioController {
