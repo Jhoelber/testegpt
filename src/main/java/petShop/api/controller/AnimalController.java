@@ -28,7 +28,7 @@ public class AnimalController {
     @Autowired
     private AnimalService animalService;
 
-    @PostMapping
+    @PostMapping("/cadastrar")
     @Transactional
     public ResponseEntity<?> cadastrar(@RequestBody DadosCadastroAnimal dados, UriComponentsBuilder uriBuilder) {
         Cliente cliente = clienteRepository.findById(dados.clientesId())

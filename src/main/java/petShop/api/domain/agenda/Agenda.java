@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import petShop.api.domain.animal.Animal;
 import petShop.api.domain.servico.Servico;
+import petShop.api.domain.veterinario.Veterinario;
 
 
 import java.time.LocalDateTime;
@@ -29,12 +30,17 @@ public class Agenda {
     @JoinColumn(name = "servico_id")
     private Servico servico;
 
+    @ManyToOne
+    @JoinColumn(name = "veterinario_id")
+    private Veterinario veterinario;
+
     private String status;
 
-    public Agenda(LocalDateTime data, Animal animal, Servico servico, String status) {
+    public Agenda(LocalDateTime data, Animal animal, Servico servico, Veterinario veterinario, String status) {
         this.data = data;
         this.animal = animal;
         this.servico = servico;
+        this.veterinario = veterinario;
         this.status = status;
     }
 

@@ -12,6 +12,8 @@ import petShop.api.domain.animal.Animal;
 import petShop.api.domain.animal.AnimalRepository;
 import petShop.api.domain.servico.Servico;
 import petShop.api.domain.servico.ServicoRepository;
+import petShop.api.domain.veterinario.Veterinario;
+import petShop.api.domain.veterinario.VeterinarioRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +29,9 @@ public class AgendaController {
     private AnimalRepository animalRepository;
     @Autowired
     private AgendaRepository agendaRepository;
+
+    @Autowired
+    private VeterinarioRepository veterinarioRepository;
 
     @Autowired
     private ValidadorAgendamento validadorAgendamento;
@@ -83,32 +88,30 @@ public class AgendaController {
     @PostMapping("/agendar")
     public ResponseEntity<?> agendar(@RequestBody DadosAgendamento dados) {
 
-        // Validar o horário de agendamento com base no campo data
-        validadorHorarioFuncionamento.validar(dados.data());  // Validar horário antes de prosseguir
 
-        // Validar se os dados de animalId e servicoId são válidos
+        validadorHorarioFuncionamento.validar(dados.data());
+
+
         if (dados.servicoId() == null || dados.animalId() == null) {
             return ResponseEntity.badRequest().body("Serviço ou Animal ID não podem ser nulos");
         }
 
-        // Validar os dados de agendamento (como você já fazia)
+
         validadorAgendamento.validar(dados);
 
-        // Obter o serviço e o animal do banco de dados
+
         Servico servico = servicoRepository.findById(dados.servicoId())
                 .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
 
         Animal animal = animalRepository.findById(dados.animalId())
                 .orElseThrow(() -> new RuntimeException("Animal não encontrado"));
 
-        // Criar o agendamento
-        Agenda novoAgendamento = new Agenda(dados.data(), animal, servico, "Agendado");
-        novoAgendamento.setData(dados.data());
-        novoAgendamento.setServico(servico);
-        novoAgendamento.setAnimal(animal);
-        novoAgendamento.setStatus("Agendado");
+        Veterinario veterinario = veterinarioRepository.findById(dados.veterinarioId())
+                .orElseThrow(() -> new RuntimeException("Veterinário não encontrado"));
 
-        // Salvar o agendamento
+        Agenda novoAgendamento = new Agenda(dados.data(), animal, servico, veterinario, "Agendado");
+
+
         Agenda agendamentoSalvo = agendaRepository.save(novoAgendamento);
 
         return ResponseEntity.status(201).body(agendamentoSalvo);

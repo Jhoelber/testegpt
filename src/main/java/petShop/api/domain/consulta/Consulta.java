@@ -24,7 +24,7 @@ public class Consulta {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "veterinario_id")
+    @JoinColumn(name = "veterinarios_id")
     private Veterinario veterinario;
 
     @ManyToOne(fetch = FetchType.LAZY)
