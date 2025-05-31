@@ -65,10 +65,6 @@ public class AgendaDeConsultas {
         consulta.setValor(valor);
         consulta.setTipo(dados.tipo());
 
-
-
-
-
         return new DadosDetalhamentoConsulta(consulta);
     }
 

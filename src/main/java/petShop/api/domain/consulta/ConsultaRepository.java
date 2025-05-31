@@ -13,6 +13,7 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
     boolean existsByAnimalIdAndDataBetween(Long idAnimal, LocalDateTime primeiroHorario, LocalDateTime ultimoHorario);
 
     boolean existsByVeterinarioIdAndDataAndMotivoCancelamentoIsNull(Long idVeterinario, LocalDateTime data);
+    boolean existsByAnimalIdAndData(Long idAnimal, LocalDateTime data);
 
     List<Consulta> findByVeterinarioIdAndDataBetween(Long veterinarioId, LocalDateTime inicio, LocalDateTime fim);
 
