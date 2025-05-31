@@ -4,9 +4,11 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import petShop.api.domain.veterinario.Especialidade;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record DadosAgendamentoConsulta(
+        @NotNull
         Long idVeterinario,
 
         @NotNull
@@ -16,5 +18,15 @@ public record DadosAgendamentoConsulta(
         @Future
         LocalDateTime data,
 
-        Especialidade especialidade) {
+        @NotNull
+        TipoConsulta tipo,
+
+        BigDecimal valor,
+
+        Especialidade especialidade
+
+
+
+) {
+
 }

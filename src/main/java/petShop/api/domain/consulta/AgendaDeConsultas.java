@@ -10,6 +10,7 @@ import petShop.api.domain.animal.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -38,7 +39,7 @@ public class AgendaDeConsultas {
         }
 
         if (dados.idVeterinario() != null && !veterinarioRepository.existsById(dados.idVeterinario())) {
-            throw new ValidacaoException("Id do Veterinario informado não existe!");
+            throw new ValidacaoException("Id do Veterinário informado não existe!");
         }
 
         validadores.forEach(v -> v.validar(dados));
@@ -49,11 +50,28 @@ public class AgendaDeConsultas {
             throw new ValidacaoException("Não existe médico disponível nessa data!");
         }
 
-        var consulta = new Consulta(null, veterinario, animal, dados.data(), null);
+        // Define valor com base no tipo
+        BigDecimal valor;
+        switch (dados.tipo()) {
+            case CONSULTA -> valor = new BigDecimal("100.00");
+            case RETORNO -> valor = BigDecimal.ZERO;
+            case VACINACAO -> valor = null; // definido presencialmente
+            default -> throw new IllegalArgumentException("Tipo de consulta inválido");
+        }
+
+        var consulta = new Consulta(null, veterinario, animal, dados.data(), valor, dados.tipo());
         consultaRepository.save(consulta);
+
+        consulta.setValor(valor);
+        consulta.setTipo(dados.tipo());
+
+
+
+
 
         return new DadosDetalhamentoConsulta(consulta);
     }
+
 
     public void cancelar(DadosCancelamentoConsulta dados) {
         if (!consultaRepository.existsById(dados.idConsulta())) {

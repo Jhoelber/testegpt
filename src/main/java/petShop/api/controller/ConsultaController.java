@@ -28,6 +28,14 @@ public class ConsultaController {
     @Transactional
     public ResponseEntity agendar(@RequestBody @Valid DadosAgendamentoConsulta dados) {
         var dto = agenda.agendar(dados);
+
+        System.out.println("Dados recebidos:");
+        System.out.println("idAnimal: " + dados.idAnimal());
+        System.out.println("idVeterinario: " + dados.idVeterinario());
+        System.out.println("data: " + dados.data());
+        System.out.println("tipo: " + dados.tipo());
+
+
         return ResponseEntity.ok(dto);
     }
 
@@ -55,8 +63,13 @@ public class ConsultaController {
                 .filter(h -> !ocupados.contains(h))
                 .toList();
 
+
+
+
+
         return ResponseEntity.ok(disponiveis);
     }
+
 
 
 }
