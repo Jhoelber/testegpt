@@ -55,7 +55,7 @@ public class AgendaDeConsultas {
         switch (dados.tipo()) {
             case CONSULTA -> valor = new BigDecimal("100.00");
             case RETORNO -> valor = BigDecimal.ZERO;
-            case VACINACAO -> valor = null; // definido presencialmente
+            case VACINACAO -> valor = null;
             default -> throw new IllegalArgumentException("Tipo de consulta inválido");
         }
 
