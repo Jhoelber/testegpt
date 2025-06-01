@@ -17,7 +17,7 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
 
     List<Consulta> findByVeterinarioIdAndDataBetween(Long veterinarioId, LocalDateTime inicio, LocalDateTime fim);
 
-    // ✅ Adicione este:
+
     @Query("""
         select c.data from Consulta c
         where c.veterinario.id = :veterinarioId
@@ -26,4 +26,20 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
     """)
     List<LocalDateTime> findHorariosOcupados(@Param("veterinarioId") Long veterinarioId,
                                              @Param("data") LocalDate data);
+
+    @Query("""
+SELECT new petShop.api.domain.consulta.ConsultaAgendaDTO(
+    c.id,
+    c.animal.nome,
+    c.animal.cliente.nome,
+    c.data
+)
+FROM Consulta c
+WHERE c.veterinario.id = :idVeterinario
+AND c.motivoCancelamento IS NULL
+ORDER BY c.data
+""")
+
+    List<ConsultaAgendaDTO> findConsultasAgendadasPorVeterinario(@Param("idVeterinario") Long idVeterinario);
+
 }

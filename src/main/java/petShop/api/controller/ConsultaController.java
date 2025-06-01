@@ -2,9 +2,7 @@ package petShop.api.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import petShop.api.domain.consulta.AgendaDeConsultas;
-import petShop.api.domain.consulta.DadosAgendamentoConsulta;
-import petShop.api.domain.consulta.DadosCancelamentoConsulta;
+import petShop.api.domain.consulta.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -23,6 +23,9 @@ public class ConsultaController {
 
     @Autowired
     private AgendaDeConsultas agenda;
+
+    @Autowired
+    private ConsultaRepository repository;
 
     @PostMapping
     @Transactional
@@ -70,6 +73,19 @@ public class ConsultaController {
         return ResponseEntity.ok(disponiveis);
     }
 
+    @GetMapping("/agenda/{idVeterinario}")
+    public ResponseEntity<List<AgendaPorDataDTO>> listarAgendaVeterinario(@PathVariable Long idVeterinario) {
+        var consultas = repository.findConsultasAgendadasPorVeterinario(idVeterinario);
+
+        var agrupadoPorData = consultas.stream()
+                .collect(Collectors.groupingBy(c -> c.data().toLocalDate()))
+                .entrySet().stream()
+                .map(e -> new AgendaPorDataDTO(e.getKey(), e.getValue()))
+                .sorted(Comparator.comparing(AgendaPorDataDTO::data))
+                .toList();
+
+        return ResponseEntity.ok(agrupadoPorData);
+    }
 
 
 }
