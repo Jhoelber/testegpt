@@ -1,7 +1,9 @@
 package petShop.api.domain.agenda.validacao;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import petShop.api.domain.ValidacaoException;
 import petShop.api.domain.agenda.*;
 import petShop.api.domain.animal.Animal;
 import petShop.api.domain.servico.Servico;
@@ -54,9 +56,7 @@ public class AgendaService {
         agendaRepository.save(agenda);
     }
 
-    public void cancelar(DadosCancelamento dados) {
 
-    }
 
     public void agendarServico(DadosAgendamento dados) {
         validadores.forEach(validador -> validador.validar(dados));
@@ -117,13 +117,17 @@ public class AgendaService {
     public List<AgendaAnimalDTO> buscarPorAnimal(String nome) {
         return agendaRepository.findAll().stream()
                 .filter(a -> a.getAnimal().getNome().toLowerCase().contains(nome.toLowerCase()))
-                .map(a -> new AgendaAnimalDTO(
-                        a.getData().toLocalDate().toString(),
-                        a.getData().toLocalTime().toString(),
-                        a.getServico().getNome(),
-                        a.getAnimal().getNome()
-                ))
+                .map(AgendaAnimalDTO::new)
                 .toList();
+    }
+
+    @Transactional
+    public void cancelar(DadosCancelamento dados) {
+        Agenda agendamento = agendaRepository.findById(dados.agendamentoId())
+                .orElseThrow(() -> new ValidacaoException("Agendamento não encontrado"));
+
+        agendamento.setStatus("Cancelado");
+        // você pode salvar o motivo em um campo extra se quiser
     }
 
 }

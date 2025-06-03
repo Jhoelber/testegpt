@@ -143,12 +143,7 @@ public class AgendaController {
 
     @PostMapping("/cancelar")
     public ResponseEntity<?> cancelar(@RequestBody DadosCancelamento dados) {
-        var agendamento = agendaRepository.findById(dados.agendamentoId())
-                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado"));
-
-        agendamento.setStatus("Cancelado");
-        agendaRepository.save(agendamento);
-
-        return ResponseEntity.ok("Agendamento cancelado com sucesso.");
+        agendaService.cancelar(dados); // ← aqui que o id pode estar nulo
+        return ResponseEntity.noContent().build();
     }
 }

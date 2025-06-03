@@ -45,6 +45,11 @@ public class Agenda {
     }
     public Agenda() {}
 
+    public void cancelar(String motivo) {
+        this.status = "Cancelado";
+
+    }
+
     public void setMotivoCancelamento(String motivo) {
     }
 }
