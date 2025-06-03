@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,10 +77,15 @@ public class ConsultaController {
 
     @GetMapping("/agenda/{idVeterinario}")
     public ResponseEntity<List<AgendaPorDataDTO>> listarAgendaVeterinario(@PathVariable Long idVeterinario) {
-        var consultas = repository.findConsultasAgendadasPorVeterinario(idVeterinario);
+        var consultas = repository.findConsultasAgendadasPorVeterinario(idVeterinario)
+                .stream()
+                .map(ConsultaAgendaDTO::new)
+                .toList();
 
         var agrupadoPorData = consultas.stream()
-                .collect(Collectors.groupingBy(c -> c.data().toLocalDate()))
+                .collect(Collectors.groupingBy(dto ->
+                        OffsetDateTime.parse(dto.data()).toLocalDate()
+                ))
                 .entrySet().stream()
                 .map(e -> new AgendaPorDataDTO(e.getKey(), e.getValue()))
                 .sorted(Comparator.comparing(AgendaPorDataDTO::data))
@@ -86,6 +93,9 @@ public class ConsultaController {
 
         return ResponseEntity.ok(agrupadoPorData);
     }
+
+
+
 
 
 }

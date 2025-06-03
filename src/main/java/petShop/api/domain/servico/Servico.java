@@ -25,5 +25,6 @@ public class Servico {
     private String descricao;
 
     @OneToMany(mappedBy = "servico")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private List<Agenda> agendas;
 }

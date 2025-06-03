@@ -3,6 +3,7 @@ package petShop.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import petShop.api.domain.servico.DadosListagemServico;
 import petShop.api.domain.servico.Servico;
 import petShop.api.domain.servico.ServicoService;
 
@@ -16,8 +17,11 @@ public class ServicoController {
     private ServicoService servicoService;
 
     @GetMapping
-    public ResponseEntity<List<Servico>> listarServicos() {
-        List<Servico> servicos = servicoService.listarServicos();
+    public ResponseEntity<List<DadosListagemServico>> listarServicos() {
+        var servicos = servicoService.listarServicos().stream()
+                .map(DadosListagemServico::new)
+                .toList();
+
         return ResponseEntity.ok(servicos);
     }
 
@@ -32,4 +36,6 @@ public class ServicoController {
         servicoService.deletarServico(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

@@ -3,9 +3,8 @@ package petShop.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import petShop.api.domain.agenda.Agenda;
-import petShop.api.domain.agenda.AgendaRepository;
-import petShop.api.domain.agenda.DadosAgendamento;
+import petShop.api.domain.agenda.*;
+import petShop.api.domain.agenda.validacao.AgendaService;
 import petShop.api.domain.agenda.validacao.ValidadorAgendamento;
 import petShop.api.domain.agenda.validacao.ValidadorHorarioFuncionamento;
 import petShop.api.domain.animal.Animal;
@@ -18,28 +17,92 @@ import petShop.api.domain.veterinario.VeterinarioRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
 @RestController
 @RequestMapping("/agendas")
 public class AgendaController {
+
     @Autowired
     private ServicoRepository servicoRepository;
-
     @Autowired
     private AnimalRepository animalRepository;
     @Autowired
     private AgendaRepository agendaRepository;
-
     @Autowired
     private VeterinarioRepository veterinarioRepository;
 
     @Autowired
+    private AgendaService agendaService;
+    @Autowired
     private ValidadorAgendamento validadorAgendamento;
     @Autowired
     private ValidadorHorarioFuncionamento validadorHorarioFuncionamento;
+
     @GetMapping
     public List<Agenda> listarTodas() {
         return agendaRepository.findAll();
+    }
+
+
+    @GetMapping("/por-animal")
+    public ResponseEntity<List<AgendaAnimalDTO>> buscarPorAnimal(@RequestParam String nome) {
+        List<AgendaAnimalDTO> resultado = agendaService.buscarPorAnimal(nome);
+        return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/por-dia")
+    public ResponseEntity<List<AgendaDiaDTO>> listarAgendaCompleta() {
+        return ResponseEntity.ok(agendaService.listarAgendaCompleta());
+    }
+
+    @GetMapping("/horarios-disponiveis/{servicoId}")
+    public ResponseEntity<List<HorarioDTO>> listarHorariosDisponiveis(@PathVariable Long servicoId) {
+        return ResponseEntity.ok(agendaService.gerarHorariosDisponiveis(servicoId));
+    }
+
+    @GetMapping("/disponibilidade")
+    public ResponseEntity<Boolean> verificarDisponibilidade(
+            @RequestParam LocalDateTime data,
+            @RequestParam Long servicoId) {
+
+        boolean disponivel = agendaRepository.findByData(data).stream()
+                .noneMatch(agenda -> agenda.getServico().getId().equals(servicoId));
+
+        return ResponseEntity.ok(disponivel);
+    }
+
+    @PostMapping("/agendar")
+    public ResponseEntity<?> agendar(@RequestBody DadosAgendamento dados) {
+        validadorHorarioFuncionamento.validar(dados.data());
+
+        if (dados.servicoId() == null || dados.animalId() == null) {
+            return ResponseEntity.badRequest().body("Serviço ou Animal ID não podem ser nulos");
+        }
+
+        validadorAgendamento.validar(dados);
+
+        Servico servico = servicoRepository.findById(dados.servicoId())
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+        Animal animal = animalRepository.findById(dados.animalId())
+                .orElseThrow(() -> new RuntimeException("Animal não encontrado"));
+        Veterinario veterinario = veterinarioRepository.findById(dados.veterinarioId())
+                .orElseThrow(() -> new RuntimeException("Veterinário não encontrado"));
+
+        Agenda novoAgendamento = new Agenda(dados.data(), animal, servico, veterinario, "Agendado");
+        Agenda agendamentoSalvo = agendaRepository.save(novoAgendamento);
+
+        return ResponseEntity.status(201).body(agendamentoSalvo);
+    }
+
+    @PostMapping("/agendar-servico")
+    public ResponseEntity<?> agendarServico(@RequestBody DadosAgendamento dados) {
+        validadorHorarioFuncionamento.validar(dados.data());
+
+        if (dados.servicoId() == null || dados.animalId() == null) {
+            return ResponseEntity.badRequest().body("Serviço ou Animal ID não podem ser nulos");
+        }
+
+        agendaService.agendarServico(dados);
+        return ResponseEntity.status(201).build();
     }
 
     @GetMapping("/{id}")
@@ -62,8 +125,7 @@ public class AgendaController {
                     agenda.setAnimal(agendaAtualizada.getAnimal());
                     agenda.setServico(agendaAtualizada.getServico());
                     agenda.setStatus(agendaAtualizada.getStatus());
-                    Agenda atualizado = agendaRepository.save(agenda);
-                    return ResponseEntity.ok(atualizado);
+                    return ResponseEntity.ok(agendaRepository.save(agenda));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -78,44 +140,15 @@ public class AgendaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/disponibilidade")
-    public ResponseEntity<Boolean> verificarDisponibilidade(@RequestParam LocalDateTime data, @RequestParam Long servicoId) {
-        boolean disponivel = agendaRepository.findByData(data).stream()
-                .noneMatch(agenda -> agenda.getServico().getId().equals(servicoId));
-        return ResponseEntity.ok(disponivel);
+
+    @PostMapping("/cancelar")
+    public ResponseEntity<?> cancelar(@RequestBody DadosCancelamento dados) {
+        var agendamento = agendaRepository.findById(dados.agendamentoId())
+                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado"));
+
+        agendamento.setStatus("Cancelado");
+        agendaRepository.save(agendamento);
+
+        return ResponseEntity.ok("Agendamento cancelado com sucesso.");
     }
-
-    @PostMapping("/agendar")
-    public ResponseEntity<?> agendar(@RequestBody DadosAgendamento dados) {
-
-
-        validadorHorarioFuncionamento.validar(dados.data());
-
-
-        if (dados.servicoId() == null || dados.animalId() == null) {
-            return ResponseEntity.badRequest().body("Serviço ou Animal ID não podem ser nulos");
-        }
-
-
-        validadorAgendamento.validar(dados);
-
-
-        Servico servico = servicoRepository.findById(dados.servicoId())
-                .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
-
-        Animal animal = animalRepository.findById(dados.animalId())
-                .orElseThrow(() -> new RuntimeException("Animal não encontrado"));
-
-        Veterinario veterinario = veterinarioRepository.findById(dados.veterinarioId())
-                .orElseThrow(() -> new RuntimeException("Veterinário não encontrado"));
-
-        Agenda novoAgendamento = new Agenda(dados.data(), animal, servico, veterinario, "Agendado");
-
-
-        Agenda agendamentoSalvo = agendaRepository.save(novoAgendamento);
-
-        return ResponseEntity.status(201).body(agendamentoSalvo);
-    }
-
-
 }

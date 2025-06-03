@@ -28,18 +28,12 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
                                              @Param("data") LocalDate data);
 
     @Query("""
-SELECT new petShop.api.domain.consulta.ConsultaAgendaDTO(
-    c.id,
-    c.animal.nome,
-    c.animal.cliente.nome,
-    c.data
-)
-FROM Consulta c
-WHERE c.veterinario.id = :idVeterinario
-AND c.motivoCancelamento IS NULL
-ORDER BY c.data
+    SELECT c FROM Consulta c
+    WHERE c.veterinario.id = :idVeterinario
+    AND c.motivoCancelamento IS NULL
+    ORDER BY c.data
 """)
+    List<Consulta> findConsultasAgendadasPorVeterinario(@Param("idVeterinario") Long idVeterinario);
 
-    List<ConsultaAgendaDTO> findConsultasAgendadasPorVeterinario(@Param("idVeterinario") Long idVeterinario);
 
 }

@@ -43,7 +43,7 @@ public class Agenda {
         this.veterinario = veterinario;
         this.status = status;
     }
-
+    public Agenda() {}
 
     public void setMotivoCancelamento(String motivo) {
     }

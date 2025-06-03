@@ -2,10 +2,7 @@ package petShop.api.domain.agenda.validacao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import petShop.api.domain.agenda.Agenda;
-import petShop.api.domain.agenda.AgendaRepository;
-import petShop.api.domain.agenda.DadosAgendamento;
-import petShop.api.domain.agenda.DadosCancelamento;
+import petShop.api.domain.agenda.*;
 import petShop.api.domain.animal.Animal;
 import petShop.api.domain.servico.Servico;
 import petShop.api.domain.animal.AnimalRepository;  // A importação do repositório de Animal
@@ -13,6 +10,10 @@ import petShop.api.domain.servico.ServicoRepository; // A importação do reposi
 import petShop.api.domain.veterinario.Veterinario;
 import petShop.api.domain.veterinario.VeterinarioRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,11 +50,80 @@ public class AgendaService {
 
         Agenda agenda = new Agenda(dados.data(), animal, servico, veterinario, "Agendado");
 
-        // Salvar a agenda no banco de dados
+
         agendaRepository.save(agenda);
     }
 
     public void cancelar(DadosCancelamento dados) {
 
     }
+
+    public void agendarServico(DadosAgendamento dados) {
+        validadores.forEach(validador -> validador.validar(dados));
+
+        Animal animal = animalRepository.findById(dados.animalId())
+                .orElseThrow(() -> new RuntimeException("Animal não encontrado"));
+
+        Servico servico = servicoRepository.findById(dados.servicoId())
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+
+        Agenda agenda = new Agenda(dados.data(), animal, servico, null, "Agendado");
+
+        agendaRepository.save(agenda);
+    }
+
+    public List<HorarioDTO> gerarHorariosDisponiveis(Long servicoId) {
+        List<HorarioDTO> horarios = new ArrayList<>();
+        LocalDate hoje = LocalDate.now();
+
+        LocalTime[] horariosBase = {
+                LocalTime.of(9, 0),
+                LocalTime.of(10, 0),
+                LocalTime.of(11, 0),
+                LocalTime.of(14, 0),
+                LocalTime.of(15, 0),
+                LocalTime.of(16, 0)
+        };
+
+        for (int dias = 0; dias < 5; dias++) {
+            LocalDate data = hoje.plusDays(dias);
+
+            for (LocalTime hora : horariosBase) {
+                LocalDateTime dataHora = LocalDateTime.of(data, hora);
+
+                boolean ocupado = agendaRepository.findByData(dataHora).stream()
+                        .anyMatch(agenda -> agenda.getServico().getId().equals(servicoId));
+
+                if (!ocupado) {
+                    horarios.add(new HorarioDTO(data.toString(), hora.toString()));
+                }
+            }
+        }
+
+        return horarios;
+    }
+
+    public List<AgendaDiaDTO> listarAgendaCompleta() {
+        return agendaRepository.findAll().stream()
+                .map(a -> new AgendaDiaDTO(
+                        a.getData().toLocalDate().toString(),
+                        a.getData().toLocalTime().toString(),
+                        a.getAnimal().getNome(),
+                        a.getServico().getNome()
+                ))
+                .toList();
+    }
+
+    public List<AgendaAnimalDTO> buscarPorAnimal(String nome) {
+        return agendaRepository.findAll().stream()
+                .filter(a -> a.getAnimal().getNome().toLowerCase().contains(nome.toLowerCase()))
+                .map(a -> new AgendaAnimalDTO(
+                        a.getData().toLocalDate().toString(),
+                        a.getData().toLocalTime().toString(),
+                        a.getServico().getNome(),
+                        a.getAnimal().getNome()
+                ))
+                .toList();
+    }
+
 }
