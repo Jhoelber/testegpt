@@ -85,15 +85,17 @@ public class AgendaService {
                 LocalTime.of(16, 0)
         };
 
-        for (int dias = 0; dias < 5; dias++) {
+        for (int dias = 0; dias < 15; dias++) {
             LocalDate data = hoje.plusDays(dias);
 
             for (LocalTime hora : horariosBase) {
                 LocalDateTime dataHora = LocalDateTime.of(data, hora);
 
                 boolean ocupado = agendaRepository.findByData(dataHora).stream()
-                        .anyMatch(agenda -> agenda.getServico().getId().equals(servicoId));
-
+                        .anyMatch(agenda ->
+                                agenda.getServico().getId().equals(servicoId)
+                                        && !agenda.getStatus().equalsIgnoreCase("Cancelado")
+                        );
                 if (!ocupado) {
                     horarios.add(new HorarioDTO(data.toString(), hora.toString()));
                 }
@@ -127,7 +129,7 @@ public class AgendaService {
                 .orElseThrow(() -> new ValidacaoException("Agendamento não encontrado"));
 
         agendamento.setStatus("Cancelado");
-        // você pode salvar o motivo em um campo extra se quiser
+
     }
 
 }

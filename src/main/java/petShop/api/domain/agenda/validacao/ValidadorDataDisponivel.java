@@ -16,10 +16,15 @@ public class ValidadorDataDisponivel {
 
     public void validar(LocalDateTime data, Long servicoId) {
         boolean disponivel = agendaRepository.findByData(data).stream()
-                .noneMatch(agenda -> agenda.getServico().getId().equals(servicoId));
+                .noneMatch(agenda ->
+                        agenda.getServico().getId().equals(servicoId)
+                                && !agenda.getStatus().equalsIgnoreCase("Cancelado")
+                );
 
         if (!disponivel) {
-            throw new ValidacaoException("Já existe um agendamento para esse serviço na data informada.");
+            throw new ValidacaoException("Já existe um agendamento ativo para esse serviço na data informada.");
         }
     }
+
+
 }
