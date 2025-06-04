@@ -132,4 +132,17 @@ public class AgendaService {
 
     }
 
+    public List<AgendaDiaDTO> buscarPorDia(LocalDate data) {
+        return agendaRepository.findAll().stream()
+                .filter(a -> a.getData().toLocalDate().isEqual(data))
+                .map(a -> new AgendaDiaDTO(
+                        a.getData().toLocalDate().toString(),
+                        a.getData().toLocalTime().toString(),
+                        a.getAnimal().getNome(),
+                        a.getServico().getNome()
+                ))
+                .toList();
+    }
+
+
 }

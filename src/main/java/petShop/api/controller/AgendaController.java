@@ -49,7 +49,7 @@ public class AgendaController {
         return ResponseEntity.ok(resultado);
     }
 
-    @GetMapping("/por-dia")
+    @GetMapping("/todas-por-dia")
     public ResponseEntity<List<AgendaDiaDTO>> listarAgendaCompleta() {
         return ResponseEntity.ok(agendaService.listarAgendaCompleta());
     }
@@ -146,4 +146,13 @@ public class AgendaController {
         agendaService.cancelar(dados); // ← aqui que o id pode estar nulo
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/por-dia")
+    public ResponseEntity<List<AgendaDiaDTO>> buscarPorDia(@RequestParam LocalDate data) {
+        List<AgendaDiaDTO> agendamentos = agendaService.buscarPorDia(data);
+        return ResponseEntity.ok(agendamentos);
+    }
+
+
+
 }
